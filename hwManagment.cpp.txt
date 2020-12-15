@@ -1,0 +1,211 @@
+#include <iostream>
+#include <vector>
+
+#include <string>
+
+using namespace std;
+
+#include "hwManagment.h"
+
+Capstone::Capstone()
+{
+	taskNum = 0;
+	taskAt = 1;
+	this -> name = name;
+	this -> course = course;
+	this -> date = date;
+	this -> cmpl = cmpl;
+	//this -> etc = etc;
+
+	vector <Capstone> hwTasks;
+}
+
+void Capstone::add()
+{	
+	taskNum++;
+	name = "Page 1";
+	course = "Math";
+	date = "1/1/2020";
+	cmpl = false;
+	
+	hwTasks.push_back(Capstone(*this));
+}
+
+void Capstone::update()
+{
+
+}
+
+void Capstone::markComplete()
+{
+	for (Capstone x : hwTasks)
+	{
+		if (x.cmpl == false)
+		{
+			x.printInfo();
+		}
+	}
+
+	cout << " SELECT A TASK TO MARK COMPLETE ";
+	selection = getSelection(selection);
+
+	for (Capstone x : hwTasks)
+	{
+		if (x.taskNum = selection)
+		{
+			x.cmpl = true;
+			x.printInfo();
+		}
+	}
+
+
+}
+
+void Capstone::search()
+{	
+	string crsNam;
+
+	cout << " Please enter a number to make a selection.\n" << endl;
+	cout << " (1) SEARCH BY DUEDATE \n";
+	cout << " (2) SEARCH BY COURSE \n";
+	cout << " (3) DISPLAY ALL INCOMPLETE ASSIGNMENTS \n";
+	
+	selection = getSelection(selection);
+	
+	switch (selection)
+	{
+	case 1:
+		for (Capstone x : hwTasks)
+		{
+			if (x.cmpl == false)
+			{
+				x.printInfo();
+			}
+		}
+		break;
+	case 2:
+			
+		cout << "\n ENTER THE EXACT COURSE NAME\n" << endl;
+		cout << " Course Include: ";
+		for (Capstone x : hwTasks)
+		{
+			cout << x.course + " ";
+		}
+
+		cout << "\n Course Name: ";
+		cin >> crsNam;
+
+		for (Capstone x : hwTasks)
+		{
+			if (x.course == crsNam)
+			{
+				x.printInfo();
+			}
+		}
+		
+		break;
+	case 3:
+		
+		for (Capstone x : hwTasks)
+		{
+			if (x.cmpl == false)
+			{
+				x.printInfo();
+			}
+		}
+	
+		break;
+	default:
+	
+		break;
+	}
+	
+	
+}
+
+void Capstone::printALL() 
+{	
+	if (taskAt < hwTasks.back().taskNum) 
+	{
+		hwTasks[taskAt - 1].printInfo();
+		taskAt++;
+	}
+	else 
+	{
+		return hwTasks.back().printInfo();
+	}
+
+	return printALL(); // tail recursion
+}
+
+void Capstone::printInfo()
+{
+	cout << endl;
+	cout << " TASK NUMBER " << taskNum <<endl;
+	cout << " ------------" << endl;
+	cout << " Name: " << name << endl;
+	cout << " Days: " << date << endl;
+	printf(" Is the task Complete: %s\n", cmpl ? "Yes" : "No");
+	cout << " Estimated time of completeion : " << etc << endl;
+	cout << endl;
+}
+
+int Capstone::getSelection(int selection)
+{
+	cout << "\n Selection: ";
+	cin >> selection;
+	return selection;
+}
+
+
+void Capstone::displayMenu()
+{
+	cout << "\n Homework Managment System " << endl;
+	cout << " --------------------------- ";
+	cout << "\n Please enter a number to make a selection.\n" << endl;
+	cout << " (1) ADD \n";
+	cout << " (2) UPDATE \n";
+	cout << " (3) SEARCH \n";
+	cout << " (4) MARK COMPLETE \n";
+	cout << " (5) PRINT ALL TASKS \n";
+	cout << " (*) PRESS ANY OTHER KEY TO EXIT \n";
+}
+
+void Capstone::startProject()
+{
+	do
+	{
+		displayMenu();
+		selection = getSelection(selection);
+		cout << endl;
+		managmentSystem(selection);
+
+	} while (selection <= 5 && selection >= 1);
+
+	cout << "\n You have closed the progam \n" << endl;
+}
+
+
+void Capstone::managmentSystem(int selection)
+{
+	switch (selection)
+	{
+	case 1:
+		add();
+		break;
+	case 2:
+		update();
+		break;
+	case 3:
+		search();
+		break;
+	case 4:
+		markComplete();
+		break;
+	case 5:
+		printALL();
+		break;
+	default:
+		break;
+	}
+}
